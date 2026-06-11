@@ -1,0 +1,6 @@
+{
+  "name": "Football AI Predictor",
+  "description": "Análise preditiva de partidas de futebol com inteligência artificial, estatísticas avançadas e simulação em tempo real.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
