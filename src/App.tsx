@@ -55,6 +55,17 @@ export default function App() {
     fetchMatches();
   }, []);
 
+  // Listen for newly added live matches from CustomPredictor
+  useEffect(() => {
+    const handler = () => {
+      fetchMatches();
+      setGlobalMessage("✅ Jogo encontrado e adicionado ao painel!");
+      setTimeout(() => setGlobalMessage(null), 4000);
+    };
+    window.addEventListener("match-added", handler);
+    return () => window.removeEventListener("match-added", handler);
+  }, []);
+
   // Reset to initial soccer database state
   const handleReset = async () => {
     try {

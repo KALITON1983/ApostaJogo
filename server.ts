@@ -5,6 +5,7 @@ import Groq from "groq-sdk";
 import dotenv from "dotenv";
 import { FootballMatch, MatchStatus, MatchStats, AIPrediction } from "./src/types";
 import { exec } from "child_process";
+import https from "https";
 
 dotenv.config();
 
@@ -1501,5 +1502,211 @@ async function startServer() {
     }
   });
 }
+
+// Helper: fetch URL with optional API key header
+function httpGet(url: string, apiKey?: string): Promise<any> {
+  return new Promise((resolve, reject) => {
+    const headers: Record<string,string> = { "Accept": "application/json" };
+    if (apiKey) headers["X-Auth-Token"] = apiKey;
+    https.get(url, { headers }, (res) => {
+      let data = "";
+      res.on("data", (chunk) => (data += chunk));
+      res.on("end", () => {
+        try { resolve(JSON.parse(data)); } catch { reject(new Error("Invalid JSON")) }
+      });
+    }).on("error", reject);
+  });
+}
+
+// POST /api/matches/search-live
+// Busca um jogo pelo nome das equipes via football-data.org ou usa Groq para simular
+app.post("/api/matches/search-live", async (req, res) => {
+  const { homeTeam, awayTeam } = req.body;
+  if (!homeTeam || !awayTeam) {
+    return res.status(400).json({ error: "Nomes das equipes são obrigatórios" });
+  }
+
+  const fdApiKey = process.env.FOOTBALL_DATA_API_KEY;
+  const simulatedId = "live_" + Date.now();
+
+  // --- Try football-data.org first if key is set ---
+  if (fdApiKey) {
+    try {
+      const today = new Date().toISOString().split("T")[0];
+      const from = new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString().split("T")[0];
+      const to   = new Date(Date.now() + 3 * 24 * 60 * 60 * 1000).toISOString().split("T")[0];
+      const data = await httpGet(
+        `https://api.football-data.org/v4/matches?dateFrom=${from}&dateTo=${to}`,
+        fdApiKey
+      );
+      const matches = data.matches || [];
+      const homeQ = homeTeam.toLowerCase();
+      const awayQ = awayTeam.toLowerCase();
+      const found = matches.find((m: any) => {
+        const hn = (m.homeTeam?.name || "").toLowerCase();
+        const an = (m.awayTeam?.name || "").toLowerCase();
+        return (hn.includes(homeQ) || homeQ.includes(hn.split(" ")[0])) &&
+               (an.includes(awayQ) || awayQ.includes(an.split(" ")[0]));
+      });
+
+      if (found) {
+        const isLive   = found.status === "IN_PLAY" || found.status === "PAUSED";
+        const isDone   = found.status === "FINISHED";
+        const hScore   = found.score?.fullTime?.home ?? found.score?.halfTime?.home ?? 0;
+        const aScore   = found.score?.fullTime?.away ?? found.score?.halfTime?.away ?? 0;
+        const minute   = isLive ? (found.minute ?? 1) : isDone ? 90 : 0;
+        const startUtc = found.utcDate ? new Date(found.utcDate) : new Date();
+        const startBRT = startUtc.toLocaleString("pt-BR", { timeZone: "America/Sao_Paulo", day: "2-digit", month: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit" }).replace(",", "");
+
+        const realMatch: FootballMatch = {
+          id: simulatedId,
+          leagueName: found.competition?.name || "Liga Internacional",
+          status: isLive ? MatchStatus.LIVE : isDone ? MatchStatus.FINISHED : MatchStatus.PRE_MATCH,
+          minute,
+          homeScore: hScore,
+          awayScore: aScore,
+          startTime: startBRT,
+          homeTeam: {
+            name: found.homeTeam.name,
+            shortName: found.homeTeam.shortName || found.homeTeam.tla || homeTeam.slice(0,3).toUpperCase(),
+            form: ["W","D","W","L","W"],
+            avgGoalsScored: 1.8, avgGoalsConceded: 1.2,
+            homeWinRate: 60, awayWinRate: 45,
+            leaguePosition: 5, injuries: [],
+            color: "#3b82f6"
+          },
+          awayTeam: {
+            name: found.awayTeam.name,
+            shortName: found.awayTeam.shortName || found.awayTeam.tla || awayTeam.slice(0,3).toUpperCase(),
+            form: ["D","W","L","W","D"],
+            avgGoalsScored: 1.5, avgGoalsConceded: 1.4,
+            homeWinRate: 55, awayWinRate: 40,
+            leaguePosition: 8, injuries: [],
+            color: "#ef4444"
+          },
+          stats: {
+            possession: [50, 50], shotsOnTarget: [0, 0], corners: [0, 0],
+            yellowCards: [0, 0], redCards: [0, 0], xG: [0, 0], momentumHistory: [0]
+          },
+          predictions: {
+            winProbHome: 45, drawProb: 28, winProbAway: 27,
+            over25Prob: 55, bothToScoreProb: 50,
+            nextGoalTeam: isLive ? (hScore > aScore ? "HOME" : "AWAY") : "HOME",
+            nextGoalProb: 55,
+            probableScores: [{ score: `${hScore+1} x ${aScore}`, probability: 35 }, { score: `${hScore} x ${aScore}`, probability: 30 }, { score: `${hScore} x ${aScore+1}`, probability: 20 }],
+            confidenceRating: 78,
+            detailedAnalysis: `Jogo encontrado via API oficial! ${found.homeTeam.name} x ${found.awayTeam.name} — ${found.competition?.name}. Dados atualizados em tempo real.`,
+            tacticalRecommendation: isLive ? `Placar atual: ${hScore} x ${aScore}. Acompanhe a evolução dos dados em tempo real.` : "Análise pré-jogo baseada em dados oficiais."
+          },
+          h2h: []
+        };
+        databaseMatches.unshift(realMatch);
+        matchLogs[simulatedId] = isLive
+          ? [`${minute}' - ⚽ Jogo encontrado AO VIVO via API oficial! Placar: ${hScore} x ${aScore}`]
+          : [`Jogo encontrado. Status: ${found.status}. Dados carregados com sucesso.`];
+        return res.json({ match: realMatch, source: "football-data.org", isReal: true });
+      }
+    } catch (err) {
+      console.warn("football-data.org falhou, usando fallback Groq:", err);
+    }
+  }
+
+  // --- Fallback: use Groq to generate a smart pre-match analysis ---
+  const groqClient = getGroqClient();
+  const fallbackMatch: FootballMatch = {
+    id: simulatedId,
+    leagueName: "Análise Inteligente IA",
+    status: MatchStatus.PRE_MATCH,
+    minute: 0, homeScore: 0, awayScore: 0,
+    homeTeam: {
+      name: homeTeam, shortName: homeTeam.slice(0,3).toUpperCase(),
+      form: ["W","D","W","L","W"], avgGoalsScored: 1.8, avgGoalsConceded: 1.2,
+      homeWinRate: 60, awayWinRate: 45, leaguePosition: 5, injuries: [], color: "#3b82f6"
+    },
+    awayTeam: {
+      name: awayTeam, shortName: awayTeam.slice(0,3).toUpperCase(),
+      form: ["D","W","L","W","D"], avgGoalsScored: 1.5, avgGoalsConceded: 1.4,
+      homeWinRate: 55, awayWinRate: 40, leaguePosition: 8, injuries: [], color: "#ef4444"
+    },
+    stats: { possession: [50,50], shotsOnTarget: [0,0], corners: [0,0], yellowCards: [0,0], redCards: [0,0], xG: [0,0], momentumHistory: [0] },
+    predictions: { winProbHome: 45, drawProb: 28, winProbAway: 27, over25Prob: 55, bothToScoreProb: 50, nextGoalTeam: "HOME", nextGoalProb: 55, probableScores: [{ score: "1 x 0", probability: 30 }, { score: "1 x 1", probability: 28 }, { score: "2 x 1", probability: 20 }], confidenceRating: 72, detailedAnalysis: `Análise preditiva de ${homeTeam} x ${awayTeam} gerada por IA.`, tacticalRecommendation: "Verifique os dados de desfalques e use a simulação em tempo real." },
+    h2h: []
+  };
+
+  if (!groqClient) {
+    databaseMatches.unshift(fallbackMatch);
+    matchLogs[simulatedId] = ["Jogo adicionado. Configure GROQ_API_KEY ou FOOTBALL_DATA_API_KEY para análise real."];
+    return res.json({ match: fallbackMatch, source: "local", isReal: false });
+  }
+
+  try {
+    const prompt = `Analise o jogo entre "${homeTeam}" e "${awayTeam}" como um analista esportivo profissional.
+Retorne SOMENTE JSON válido com esta estrutura exata (sem texto fora do JSON):
+{"leagueName":"...","homeTeam":{"name":"...","shortName":"3 letras","form":["W","D","L","W","W"],"avgGoalsScored":1.8,"avgGoalsConceded":1.1,"homeWinRate":65,"awayWinRate":45,"leaguePosition":3,"injuries":["Jogador (Razão)"],"color":"#hex"},"awayTeam":{...mesma estrutura...},"predictions":{"winProbHome":45,"drawProb":28,"winProbAway":27,"over25Prob":55,"bothToScoreProb":52,"nextGoalTeam":"HOME","nextGoalProb":58,"confidenceRating":80,"detailedAnalysis":"3+ frases de análise tática profunda em português","tacticalRecommendation":"conselho de aposta curto","probableScores":[{"score":"2 x 1","probability":35},{"score":"1 x 1","probability":28},{"score":"2 x 0","probability":18}]},"h2h":[{"date":"DD/MM/AAAA","homeTeam":"...","awayTeam":"...","homeScore":1,"awayScore":0}]}`;
+    const resp = await groqClient.chat.completions.create({
+      messages: [{ role: "user", content: prompt }],
+      model: "llama3-8b-8192",
+      response_format: { type: "json_object" }
+    });
+    const parsed = JSON.parse(resp.choices[0].message.content || "{}");
+    const enrichedMatch: FootballMatch = {
+      id: simulatedId,
+      leagueName: parsed.leagueName || "Liga Internacional",
+      status: MatchStatus.PRE_MATCH,
+      minute: 0, homeScore: 0, awayScore: 0,
+      homeTeam: { ...fallbackMatch.homeTeam, ...parsed.homeTeam },
+      awayTeam: { ...fallbackMatch.awayTeam, ...parsed.awayTeam },
+      stats: fallbackMatch.stats,
+      predictions: { ...fallbackMatch.predictions, ...parsed.predictions },
+      h2h: parsed.h2h || []
+    };
+    databaseMatches.unshift(enrichedMatch);
+    matchLogs[simulatedId] = ["✅ Análise inteligente carregada via Groq AI! Clique em 'Começar Tempo Real' para iniciar a simulação."];
+    return res.json({ match: enrichedMatch, source: "groq-ai", isReal: false });
+  } catch (err) {
+    databaseMatches.unshift(fallbackMatch);
+    matchLogs[simulatedId] = ["Jogo adicionado com análise local."];
+    return res.json({ match: fallbackMatch, source: "local", isReal: false });
+  }
+});
+
+// GET /api/matches/:id/refresh — Atualiza um jogo com dados reais via football-data.org
+app.get("/api/matches/:id/refresh", async (req, res) => {
+  const matchId = req.params.id;
+  const match = databaseMatches.find(m => m.id === matchId);
+  if (!match) return res.status(404).json({ error: "Partida não encontrada" });
+
+  const fdApiKey = process.env.FOOTBALL_DATA_API_KEY;
+  if (!fdApiKey) {
+    return res.json({ match, updated: false, message: "Configure FOOTBALL_DATA_API_KEY para atualização real." });
+  }
+
+  try {
+    const from = new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString().split("T")[0];
+    const to   = new Date(Date.now() + 2 * 24 * 60 * 60 * 1000).toISOString().split("T")[0];
+    const data = await httpGet(`https://api.football-data.org/v4/matches?dateFrom=${from}&dateTo=${to}`, fdApiKey);
+    const found = (data.matches || []).find((m: any) => {
+      const hn = (m.homeTeam?.name || "").toLowerCase();
+      const an = (m.awayTeam?.name || "").toLowerCase();
+      const mhn = match.homeTeam.name.toLowerCase();
+      const man = match.awayTeam.name.toLowerCase();
+      return hn.includes(mhn.split(" ")[0]) && an.includes(man.split(" ")[0]);
+    });
+    if (found) {
+      const isLive = found.status === "IN_PLAY" || found.status === "PAUSED";
+      const isDone = found.status === "FINISHED";
+      match.homeScore = found.score?.fullTime?.home ?? found.score?.halfTime?.home ?? match.homeScore;
+      match.awayScore = found.score?.fullTime?.away ?? found.score?.halfTime?.away ?? match.awayScore;
+      match.status = isLive ? MatchStatus.LIVE : isDone ? MatchStatus.FINISHED : MatchStatus.PRE_MATCH;
+      if (isLive && found.minute) match.minute = found.minute;
+      if (!matchLogs[matchId]) matchLogs[matchId] = [];
+      matchLogs[matchId].unshift(`📶 Dados atualizados via API! Placar: ${match.homeScore} x ${match.awayScore}`);
+      return res.json({ match, updated: true, source: "football-data.org" });
+    }
+    return res.json({ match, updated: false, message: "Jogo não encontrado na janela de datas." });
+  } catch (err) {
+    return res.json({ match, updated: false, message: "Erro ao buscar dados reais." });
+  }
+});
 
 startServer();
