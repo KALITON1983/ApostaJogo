@@ -1383,7 +1383,7 @@ EXIJO que o seu retorno seja ÚNICA E EXCLUSIVAMENTE o conteúdo do JSON, sem co
 
     const response = await client.chat.completions.create({
       messages: [{ role: "user", content: prompt }],
-      model: "llama3-8b-8192",
+      model: "llama-3.3-70b-versatile",
       response_format: { type: "json_object" }
     });
 
@@ -1645,7 +1645,7 @@ Retorne SOMENTE JSON válido com esta estrutura exata (sem texto fora do JSON):
 {"leagueName":"...","homeTeam":{"name":"...","shortName":"3 letras","form":["W","D","L","W","W"],"avgGoalsScored":1.8,"avgGoalsConceded":1.1,"homeWinRate":65,"awayWinRate":45,"leaguePosition":3,"injuries":["Jogador (Razão)"],"color":"#hex"},"awayTeam":{...mesma estrutura...},"predictions":{"winProbHome":45,"drawProb":28,"winProbAway":27,"over25Prob":55,"bothToScoreProb":52,"nextGoalTeam":"HOME","nextGoalProb":58,"confidenceRating":80,"detailedAnalysis":"3+ frases de análise tática profunda em português","tacticalRecommendation":"conselho de aposta curto","probableScores":[{"score":"2 x 1","probability":35},{"score":"1 x 1","probability":28},{"score":"2 x 0","probability":18}]},"h2h":[{"date":"DD/MM/AAAA","homeTeam":"...","awayTeam":"...","homeScore":1,"awayScore":0}]}`;
     const resp = await groqClient.chat.completions.create({
       messages: [{ role: "user", content: prompt }],
-      model: "llama3-8b-8192",
+      model: "llama-3.3-70b-versatile",
       response_format: { type: "json_object" }
     });
     const parsed = JSON.parse(resp.choices[0].message.content || "{}");
