@@ -469,6 +469,569 @@ function getInitialMatches(): FootballMatch[] {
     h2h: [
       { date: "18/12/2022", homeTeam: "Argentina", awayTeam: "Holanda", homeScore: 2, awayScore: 2 }
     ]
+  },
+  // === PREMIER LEAGUE ===
+  {
+    id: "pl_1",
+    leagueName: "Premier League 2025/26 - Jornada 38",
+    status: MatchStatus.PRE_MATCH,
+    minute: 0,
+    homeScore: 0,
+    awayScore: 0,
+    startTime: "12/06/2026 16:00",
+    homeTeam: {
+      name: "Manchester City",
+      shortName: "MCI",
+      form: ["W", "W", "D", "W", "W"],
+      avgGoalsScored: 2.8,
+      avgGoalsConceded: 0.9,
+      homeWinRate: 88,
+      awayWinRate: 72,
+      leaguePosition: 1,
+      injuries: ["De Bruyne (Recuperação muscular)"],
+      color: "#6CABDD"
+    },
+    awayTeam: {
+      name: "Arsenal",
+      shortName: "ARS",
+      form: ["W", "D", "W", "W", "L"],
+      avgGoalsScored: 2.2,
+      avgGoalsConceded: 1.0,
+      homeWinRate: 80,
+      awayWinRate: 58,
+      leaguePosition: 2,
+      injuries: ["Saka (Dúvida)"],
+      color: "#EF0107"
+    },
+    stats: { possession: [50, 50], shotsOnTarget: [0, 0], corners: [0, 0], yellowCards: [0, 0], redCards: [0, 0], xG: [0, 0], momentumHistory: [0] },
+    predictions: {
+      winProbHome: 55, drawProb: 25, winProbAway: 20,
+      over25Prob: 72, bothToScoreProb: 65,
+      nextGoalTeam: "HOME", nextGoalProb: 58,
+      probableScores: [{ score: "2 x 1", probability: 35 }, { score: "2 x 0", probability: 28 }, { score: "1 x 1", probability: 20 }],
+      confidenceRating: 88,
+      detailedAnalysis: "Clássico do Etihad entre os dois principais candidatos ao título da Premier League. O City tem o poder ofensivo, o Arsenal a organização tática. Duelo de filosofias com altas apostas.",
+      tacticalRecommendation: "Ambas Marcam (Sim) com excelente cotação dado o histórico recente entre as equipes."
+    },
+    h2h: [
+      { date: "08/02/2026", homeTeam: "Arsenal", awayTeam: "Manchester City", homeScore: 1, awayScore: 0 },
+      { date: "22/10/2025", homeTeam: "Manchester City", awayTeam: "Arsenal", homeScore: 3, awayScore: 1 }
+    ]
+  },
+  {
+    id: "pl_2",
+    leagueName: "Premier League 2025/26 - Jornada 38",
+    status: MatchStatus.PRE_MATCH,
+    minute: 0,
+    homeScore: 0,
+    awayScore: 0,
+    startTime: "12/06/2026 18:30",
+    homeTeam: {
+      name: "Liverpool",
+      shortName: "LIV",
+      form: ["W", "W", "W", "D", "W"],
+      avgGoalsScored: 2.5,
+      avgGoalsConceded: 0.8,
+      homeWinRate: 85,
+      awayWinRate: 68,
+      leaguePosition: 3,
+      injuries: ["Alisson (Indisponível)"],
+      color: "#C8102E"
+    },
+    awayTeam: {
+      name: "Chelsea",
+      shortName: "CHE",
+      form: ["D", "W", "L", "W", "W"],
+      avgGoalsScored: 1.9,
+      avgGoalsConceded: 1.3,
+      homeWinRate: 65,
+      awayWinRate: 48,
+      leaguePosition: 5,
+      injuries: [],
+      color: "#034694"
+    },
+    stats: { possession: [50, 50], shotsOnTarget: [0, 0], corners: [0, 0], yellowCards: [0, 0], redCards: [0, 0], xG: [0, 0], momentumHistory: [0] },
+    predictions: {
+      winProbHome: 60, drawProb: 22, winProbAway: 18,
+      over25Prob: 68, bothToScoreProb: 60,
+      nextGoalTeam: "HOME", nextGoalProb: 62,
+      probableScores: [{ score: "2 x 0", probability: 32 }, { score: "2 x 1", probability: 28 }, { score: "3 x 1", probability: 18 }],
+      confidenceRating: 82,
+      detailedAnalysis: "Liverpool em excelente momento quer garantir a 3ª posição. Chelsea busca manter a 5ª vaga europeia. Partida com alta intensidade esperada em Anfield.",
+      tacticalRecommendation: "Vitória simples do Liverpool com handicap asiático -1 é uma entrada estatisticamente sólida."
+    },
+    h2h: [
+      { date: "01/03/2026", homeTeam: "Chelsea", awayTeam: "Liverpool", homeScore: 0, awayScore: 2 }
+    ]
+  },
+  // === LA LIGA ===
+  {
+    id: "liga_1",
+    leagueName: "La Liga 2025/26 - Jornada 38",
+    status: MatchStatus.PRE_MATCH,
+    minute: 0,
+    homeScore: 0,
+    awayScore: 0,
+    startTime: "12/06/2026 21:00",
+    homeTeam: {
+      name: "Real Madrid",
+      shortName: "RMA",
+      form: ["W", "W", "W", "W", "D"],
+      avgGoalsScored: 2.7,
+      avgGoalsConceded: 0.7,
+      homeWinRate: 90,
+      awayWinRate: 75,
+      leaguePosition: 1,
+      injuries: ["Bellingham (Suspensão)"],
+      color: "#FEBE10"
+    },
+    awayTeam: {
+      name: "FC Barcelona",
+      shortName: "FCB",
+      form: ["W", "D", "W", "L", "W"],
+      avgGoalsScored: 2.4,
+      avgGoalsConceded: 1.1,
+      homeWinRate: 82,
+      awayWinRate: 62,
+      leaguePosition: 2,
+      injuries: ["Pedri (Lesão no tornozelo)"],
+      color: "#A50044"
+    },
+    stats: { possession: [50, 50], shotsOnTarget: [0, 0], corners: [0, 0], yellowCards: [0, 0], redCards: [0, 0], xG: [0, 0], momentumHistory: [0] },
+    predictions: {
+      winProbHome: 48, drawProb: 26, winProbAway: 26,
+      over25Prob: 78, bothToScoreProb: 72,
+      nextGoalTeam: "HOME", nextGoalProb: 50,
+      probableScores: [{ score: "2 x 2", probability: 28 }, { score: "3 x 1", probability: 25 }, { score: "2 x 1", probability: 22 }],
+      confidenceRating: 85,
+      detailedAnalysis: "El Clásico! O duelo mais esperado do futebol mundial. Real Madrid quer confirmar o título em casa. Barcelona precisa da vitória para manter esperanças. Espetáculo garantido no Santiago Bernabéu.",
+      tacticalRecommendation: "Mais de 2.5 Gols é a entrada mais valiosa neste tipo de confronto histórico com média alta de gols."
+    },
+    h2h: [
+      { date: "26/10/2025", homeTeam: "FC Barcelona", awayTeam: "Real Madrid", homeScore: 1, awayScore: 4 },
+      { date: "03/03/2026", homeTeam: "Real Madrid", awayTeam: "FC Barcelona", homeScore: 2, awayScore: 2 }
+    ]
+  },
+  {
+    id: "liga_2",
+    leagueName: "La Liga 2025/26 - Jornada 38",
+    status: MatchStatus.PRE_MATCH,
+    minute: 0,
+    homeScore: 0,
+    awayScore: 0,
+    startTime: "12/06/2026 19:00",
+    homeTeam: {
+      name: "Atlético de Madrid",
+      shortName: "ATM",
+      form: ["W", "W", "D", "W", "W"],
+      avgGoalsScored: 2.0,
+      avgGoalsConceded: 0.8,
+      homeWinRate: 78,
+      awayWinRate: 60,
+      leaguePosition: 3,
+      injuries: [],
+      color: "#CB3524"
+    },
+    awayTeam: {
+      name: "Sevilla",
+      shortName: "SEV",
+      form: ["L", "D", "W", "L", "D"],
+      avgGoalsScored: 1.3,
+      avgGoalsConceded: 1.5,
+      homeWinRate: 55,
+      awayWinRate: 35,
+      leaguePosition: 8,
+      injuries: ["Rakitić (Lesionado)"],
+      color: "#D4262C"
+    },
+    stats: { possession: [50, 50], shotsOnTarget: [0, 0], corners: [0, 0], yellowCards: [0, 0], redCards: [0, 0], xG: [0, 0], momentumHistory: [0] },
+    predictions: {
+      winProbHome: 65, drawProb: 22, winProbAway: 13,
+      over25Prob: 52, bothToScoreProb: 45,
+      nextGoalTeam: "HOME", nextGoalProb: 65,
+      probableScores: [{ score: "2 x 0", probability: 38 }, { score: "2 x 1", probability: 28 }, { score: "1 x 0", probability: 18 }],
+      confidenceRating: 80,
+      detailedAnalysis: "Atlético sólido em casa com Simeone no comando. Sevilla em queda livre e sem grandes pretensões para esta jornada final.",
+      tacticalRecommendation: "Vitória do Atlético a Ganhar/Empatar (DNB) é a entrada mais conservadora e lucrativa."
+    },
+    h2h: [
+      { date: "15/02/2026", homeTeam: "Sevilla", awayTeam: "Atlético de Madrid", homeScore: 0, awayScore: 1 }
+    ]
+  },
+  // === BUNDESLIGA ===
+  {
+    id: "bun_1",
+    leagueName: "Bundesliga 2025/26 - Jornada 34",
+    status: MatchStatus.PRE_MATCH,
+    minute: 0,
+    homeScore: 0,
+    awayScore: 0,
+    startTime: "13/06/2026 15:30",
+    homeTeam: {
+      name: "Bayern München",
+      shortName: "BAY",
+      form: ["W", "W", "W", "W", "W"],
+      avgGoalsScored: 3.1,
+      avgGoalsConceded: 0.8,
+      homeWinRate: 92,
+      awayWinRate: 78,
+      leaguePosition: 1,
+      injuries: [],
+      color: "#DC052D"
+    },
+    awayTeam: {
+      name: "Borussia Dortmund",
+      shortName: "BVB",
+      form: ["W", "D", "W", "W", "L"],
+      avgGoalsScored: 2.2,
+      avgGoalsConceded: 1.2,
+      homeWinRate: 75,
+      awayWinRate: 52,
+      leaguePosition: 3,
+      injuries: ["Reus (Aposentado)", "Sancho (Dúvida)"],
+      color: "#FDE100"
+    },
+    stats: { possession: [50, 50], shotsOnTarget: [0, 0], corners: [0, 0], yellowCards: [0, 0], redCards: [0, 0], xG: [0, 0], momentumHistory: [0] },
+    predictions: {
+      winProbHome: 62, drawProb: 20, winProbAway: 18,
+      over25Prob: 82, bothToScoreProb: 70,
+      nextGoalTeam: "HOME", nextGoalProb: 64,
+      probableScores: [{ score: "3 x 1", probability: 35 }, { score: "2 x 1", probability: 28 }, { score: "3 x 2", probability: 18 }],
+      confidenceRating: 87,
+      detailedAnalysis: "Der Klassiker! A rivalidade mais intensa da Alemanha. Bayern invicto em casa nesta temporada. Dortmund tenta quebrar esta sequência com sua velocidade nas pontas.",
+      tacticalRecommendation: "Ambas Marcam e Mais de 2.5 Gols são as entradas mais seguras neste confronto historicamente elétrico."
+    },
+    h2h: [
+      { date: "02/11/2025", homeTeam: "Borussia Dortmund", awayTeam: "Bayern München", homeScore: 1, awayScore: 4 }
+    ]
+  },
+  // === SERIE A ===
+  {
+    id: "sa_1",
+    leagueName: "Serie A 2025/26 - Jornada 38",
+    status: MatchStatus.PRE_MATCH,
+    minute: 0,
+    homeScore: 0,
+    awayScore: 0,
+    startTime: "13/06/2026 20:45",
+    homeTeam: {
+      name: "Inter de Milão",
+      shortName: "INT",
+      form: ["W", "W", "W", "D", "W"],
+      avgGoalsScored: 2.4,
+      avgGoalsConceded: 0.7,
+      homeWinRate: 85,
+      awayWinRate: 65,
+      leaguePosition: 1,
+      injuries: [],
+      color: "#010E80"
+    },
+    awayTeam: {
+      name: "AC Milan",
+      shortName: "MIL",
+      form: ["D", "W", "L", "W", "D"],
+      avgGoalsScored: 1.8,
+      avgGoalsConceded: 1.2,
+      homeWinRate: 65,
+      awayWinRate: 50,
+      leaguePosition: 4,
+      injuries: ["Leão (Leve musculatura)"],
+      color: "#FB090B"
+    },
+    stats: { possession: [50, 50], shotsOnTarget: [0, 0], corners: [0, 0], yellowCards: [0, 0], redCards: [0, 0], xG: [0, 0], momentumHistory: [0] },
+    predictions: {
+      winProbHome: 58, drawProb: 25, winProbAway: 17,
+      over25Prob: 60, bothToScoreProb: 55,
+      nextGoalTeam: "HOME", nextGoalProb: 60,
+      probableScores: [{ score: "2 x 0", probability: 32 }, { score: "2 x 1", probability: 28 }, { score: "1 x 0", probability: 20 }],
+      confidenceRating: 84,
+      detailedAnalysis: "Derby della Madonnina! Inter confirma o título em casa. Milan tenta manter viva a esperança de Champions. Um dos derbies mais apaixonantes do mundo.",
+      tacticalRecommendation: "Vitória simples da Inter tem valor elevado dado o favoritismo absoluto no confronto direto desta temporada."
+    },
+    h2h: [
+      { date: "05/01/2026", homeTeam: "AC Milan", awayTeam: "Inter de Milão", homeScore: 0, awayScore: 2 }
+    ]
+  },
+  {
+    id: "sa_2",
+    leagueName: "Serie A 2025/26 - Jornada 38",
+    status: MatchStatus.PRE_MATCH,
+    minute: 0,
+    homeScore: 0,
+    awayScore: 0,
+    startTime: "13/06/2026 20:45",
+    homeTeam: {
+      name: "Juventus",
+      shortName: "JUV",
+      form: ["W", "D", "W", "W", "D"],
+      avgGoalsScored: 1.9,
+      avgGoalsConceded: 0.9,
+      homeWinRate: 78,
+      awayWinRate: 58,
+      leaguePosition: 2,
+      injuries: [],
+      color: "#000000"
+    },
+    awayTeam: {
+      name: "Napoli",
+      shortName: "NAP",
+      form: ["W", "W", "D", "W", "W"],
+      avgGoalsScored: 2.2,
+      avgGoalsConceded: 0.9,
+      homeWinRate: 82,
+      awayWinRate: 62,
+      leaguePosition: 3,
+      injuries: ["Osimhen (Preservado para Copa)"],
+      color: "#12A0C3"
+    },
+    stats: { possession: [50, 50], shotsOnTarget: [0, 0], corners: [0, 0], yellowCards: [0, 0], redCards: [0, 0], xG: [0, 0], momentumHistory: [0] },
+    predictions: {
+      winProbHome: 45, drawProb: 28, winProbAway: 27,
+      over25Prob: 62, bothToScoreProb: 60,
+      nextGoalTeam: "AWAY", nextGoalProb: 52,
+      probableScores: [{ score: "1 x 2", probability: 30 }, { score: "1 x 1", probability: 28 }, { score: "2 x 1", probability: 22 }],
+      confidenceRating: 78,
+      detailedAnalysis: "Confronto de alto nível entre dois postulantes ao top 3 da Serie A. Napoli chega embalado e deve pressionar desde o início do jogo.",
+      tacticalRecommendation: "Vitória do Napoli como visitante tem cotação atrativa dado o bom momento da equipe napolitana."
+    },
+    h2h: [
+      { date: "22/02/2026", homeTeam: "Napoli", awayTeam: "Juventus", homeScore: 2, awayScore: 1 }
+    ]
+  },
+  // === LIGUE 1 ===
+  {
+    id: "l1_1",
+    leagueName: "Ligue 1 2025/26 - Jornada 34",
+    status: MatchStatus.PRE_MATCH,
+    minute: 0,
+    homeScore: 0,
+    awayScore: 0,
+    startTime: "14/06/2026 20:00",
+    homeTeam: {
+      name: "Paris Saint-Germain",
+      shortName: "PSG",
+      form: ["W", "W", "W", "W", "W"],
+      avgGoalsScored: 3.0,
+      avgGoalsConceded: 0.6,
+      homeWinRate: 92,
+      awayWinRate: 78,
+      leaguePosition: 1,
+      injuries: [],
+      color: "#003370"
+    },
+    awayTeam: {
+      name: "Olympique de Marseille",
+      shortName: "OM",
+      form: ["W", "D", "W", "L", "W"],
+      avgGoalsScored: 1.9,
+      avgGoalsConceded: 1.1,
+      homeWinRate: 70,
+      awayWinRate: 48,
+      leaguePosition: 3,
+      injuries: [],
+      color: "#26A0D8"
+    },
+    stats: { possession: [50, 50], shotsOnTarget: [0, 0], corners: [0, 0], yellowCards: [0, 0], redCards: [0, 0], xG: [0, 0], momentumHistory: [0] },
+    predictions: {
+      winProbHome: 70, drawProb: 18, winProbAway: 12,
+      over25Prob: 75, bothToScoreProb: 60,
+      nextGoalTeam: "HOME", nextGoalProb: 70,
+      probableScores: [{ score: "3 x 1", probability: 35 }, { score: "2 x 0", probability: 28 }, { score: "3 x 0", probability: 18 }],
+      confidenceRating: 90,
+      detailedAnalysis: "Le Classique! PSG domina a Ligue 1 mas o Marseille sempre eleva o nível. A rivalidade histórica movimenta toda a França neste confronto de alto voltagem emocional.",
+      tacticalRecommendation: "PSG vence com mais de 1.5 gols marcados é a entrada mais confiável neste Le Classique."
+    },
+    h2h: [
+      { date: "27/10/2025", homeTeam: "Olympique de Marseille", awayTeam: "Paris Saint-Germain", homeScore: 1, awayScore: 3 }
+    ]
+  },
+  // === CHAMPIONS LEAGUE ===
+  {
+    id: "ucl_1",
+    leagueName: "UEFA Champions League 2025/26 - Final",
+    status: MatchStatus.PRE_MATCH,
+    minute: 0,
+    homeScore: 0,
+    awayScore: 0,
+    startTime: "15/06/2026 20:00",
+    homeTeam: {
+      name: "Manchester City",
+      shortName: "MCI",
+      form: ["W", "W", "D", "W", "W"],
+      avgGoalsScored: 2.5,
+      avgGoalsConceded: 0.8,
+      homeWinRate: 85,
+      awayWinRate: 70,
+      leaguePosition: 1,
+      injuries: ["Haaland (Dúvida físico)"],
+      color: "#6CABDD"
+    },
+    awayTeam: {
+      name: "Real Madrid",
+      shortName: "RMA",
+      form: ["W", "W", "W", "D", "W"],
+      avgGoalsScored: 2.3,
+      avgGoalsConceded: 0.8,
+      homeWinRate: 88,
+      awayWinRate: 72,
+      leaguePosition: 1,
+      injuries: [],
+      color: "#FEBE10"
+    },
+    stats: { possession: [50, 50], shotsOnTarget: [0, 0], corners: [0, 0], yellowCards: [0, 0], redCards: [0, 0], xG: [0, 0], momentumHistory: [0] },
+    predictions: {
+      winProbHome: 48, drawProb: 26, winProbAway: 26,
+      over25Prob: 68, bothToScoreProb: 62,
+      nextGoalTeam: "HOME", nextGoalProb: 50,
+      probableScores: [{ score: "2 x 1", probability: 28 }, { score: "1 x 1", probability: 25 }, { score: "2 x 2", probability: 22 }],
+      confidenceRating: 88,
+      detailedAnalysis: "A grande final da Champions League! Dois gigantes europeus disputam o troféu máximo do futebol de clubes. Manchester City quer a segunda Champions. Real Madrid quer o 16º título.",
+      tacticalRecommendation: "Ambas Marcam (Sim) com prorrogação possível. Mercado de gols individuais de Haaland tem alto valor."
+    },
+    h2h: [
+      { date: "26/04/2023", homeTeam: "Real Madrid", awayTeam: "Manchester City", homeScore: 1, awayScore: 1 }
+    ]
+  },
+  // === BRASILEIRÃO ===
+  {
+    id: "bra_1",
+    leagueName: "Brasileirão Série A 2026 - Rodada 14",
+    status: MatchStatus.PRE_MATCH,
+    minute: 0,
+    homeScore: 0,
+    awayScore: 0,
+    startTime: "14/06/2026 18:30",
+    homeTeam: {
+      name: "Flamengo",
+      shortName: "FLA",
+      form: ["W", "W", "D", "W", "W"],
+      avgGoalsScored: 2.3,
+      avgGoalsConceded: 0.9,
+      homeWinRate: 82,
+      awayWinRate: 60,
+      leaguePosition: 1,
+      injuries: ["Pedro (Corte no joelho)"],
+      color: "#CC0000"
+    },
+    awayTeam: {
+      name: "Palmeiras",
+      shortName: "PAL",
+      form: ["W", "D", "W", "W", "L"],
+      avgGoalsScored: 2.0,
+      avgGoalsConceded: 0.8,
+      homeWinRate: 78,
+      awayWinRate: 55,
+      leaguePosition: 2,
+      injuries: [],
+      color: "#006437"
+    },
+    stats: { possession: [50, 50], shotsOnTarget: [0, 0], corners: [0, 0], yellowCards: [0, 0], redCards: [0, 0], xG: [0, 0], momentumHistory: [0] },
+    predictions: {
+      winProbHome: 52, drawProb: 28, winProbAway: 20,
+      over25Prob: 58, bothToScoreProb: 55,
+      nextGoalTeam: "HOME", nextGoalProb: 55,
+      probableScores: [{ score: "2 x 1", probability: 32 }, { score: "1 x 0", probability: 28 }, { score: "1 x 1", probability: 22 }],
+      confidenceRating: 82,
+      detailedAnalysis: "O Fla-Palestra é um dos jogos mais aguardados do Brasileirão. Flamengo em casa com a Nação Rubro-Negra empurrando. Palmeiras resiliente e bem treinado por Abel Ferreira.",
+      tacticalRecommendation: "Vitória do Flamengo em casa tem valor elevado considerando o mandante e a fase atual das equipes."
+    },
+    h2h: [
+      { date: "15/09/2025", homeTeam: "Palmeiras", awayTeam: "Flamengo", homeScore: 0, awayScore: 1 },
+      { date: "05/05/2025", homeTeam: "Flamengo", awayTeam: "Palmeiras", homeScore: 2, awayScore: 0 }
+    ]
+  },
+  {
+    id: "bra_2",
+    leagueName: "Brasileirão Série A 2026 - Rodada 14",
+    status: MatchStatus.PRE_MATCH,
+    minute: 0,
+    homeScore: 0,
+    awayScore: 0,
+    startTime: "15/06/2026 16:00",
+    homeTeam: {
+      name: "São Paulo",
+      shortName: "SPF",
+      form: ["D", "W", "L", "W", "D"],
+      avgGoalsScored: 1.6,
+      avgGoalsConceded: 1.1,
+      homeWinRate: 65,
+      awayWinRate: 45,
+      leaguePosition: 5,
+      injuries: ["Calleri (Contusão)"],
+      color: "#FF0000"
+    },
+    awayTeam: {
+      name: "Corinthians",
+      shortName: "COR",
+      form: ["L", "D", "W", "L", "D"],
+      avgGoalsScored: 1.2,
+      avgGoalsConceded: 1.3,
+      homeWinRate: 52,
+      awayWinRate: 38,
+      leaguePosition: 10,
+      injuries: [],
+      color: "#000000"
+    },
+    stats: { possession: [50, 50], shotsOnTarget: [0, 0], corners: [0, 0], yellowCards: [0, 0], redCards: [0, 0], xG: [0, 0], momentumHistory: [0] },
+    predictions: {
+      winProbHome: 48, drawProb: 32, winProbAway: 20,
+      over25Prob: 42, bothToScoreProb: 48,
+      nextGoalTeam: "HOME", nextGoalProb: 50,
+      probableScores: [{ score: "1 x 0", probability: 32 }, { score: "1 x 1", probability: 30 }, { score: "2 x 0", probability: 18 }],
+      confidenceRating: 72,
+      detailedAnalysis: "Majestoso! Clássico paulistano com São Paulo em melhor fase mas Corinthians sempre eleva o nível nos jogos de rivalidade. Espera-se um jogo disputado e físico.",
+      tacticalRecommendation: "Menos de 2.5 Gols é um mercado atrativo dado o momento irregular de ambas as equipes."
+    },
+    h2h: [
+      { date: "11/10/2025", homeTeam: "Corinthians", awayTeam: "São Paulo", homeScore: 1, awayScore: 1 }
+    ]
+  },
+  // === EUROPA LEAGUE ===
+  {
+    id: "uel_1",
+    leagueName: "UEFA Europa League 2025/26 - Final",
+    status: MatchStatus.PRE_MATCH,
+    minute: 0,
+    homeScore: 0,
+    awayScore: 0,
+    startTime: "13/06/2026 20:00",
+    homeTeam: {
+      name: "Tottenham Hotspur",
+      shortName: "TOT",
+      form: ["W", "W", "D", "W", "D"],
+      avgGoalsScored: 2.0,
+      avgGoalsConceded: 1.1,
+      homeWinRate: 72,
+      awayWinRate: 55,
+      leaguePosition: 4,
+      injuries: ["Son (Pré Copa do Mundo)"],
+      color: "#132257"
+    },
+    awayTeam: {
+      name: "Eintracht Frankfurt",
+      shortName: "SGE",
+      form: ["W", "D", "W", "W", "W"],
+      avgGoalsScored: 2.1,
+      avgGoalsConceded: 1.0,
+      homeWinRate: 70,
+      awayWinRate: 52,
+      leaguePosition: 5,
+      injuries: [],
+      color: "#E1000F"
+    },
+    stats: { possession: [50, 50], shotsOnTarget: [0, 0], corners: [0, 0], yellowCards: [0, 0], redCards: [0, 0], xG: [0, 0], momentumHistory: [0] },
+    predictions: {
+      winProbHome: 45, drawProb: 28, winProbAway: 27,
+      over25Prob: 65, bothToScoreProb: 62,
+      nextGoalTeam: "HOME", nextGoalProb: 48,
+      probableScores: [{ score: "2 x 1", probability: 30 }, { score: "1 x 1", probability: 28 }, { score: "2 x 2", probability: 20 }],
+      confidenceRating: 76,
+      detailedAnalysis: "Final equilibrada entre dois clubes tradicionais europeus. Tottenham busca seu primeiro título continental. Frankfurt quer repetir o feito da Europa League 2022.",
+      tacticalRecommendation: "Ambas Marcam (Sim) é a entrada mais valiosa em uma final equilibrada com tendência a gols de ambos os lados."
+    },
+    h2h: [
+      { date: "10/12/2025", homeTeam: "Eintracht Frankfurt", awayTeam: "Tottenham Hotspur", homeScore: 1, awayScore: 2 }
+    ]
   }
 ];
 }
