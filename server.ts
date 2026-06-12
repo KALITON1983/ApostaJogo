@@ -1,7 +1,7 @@
 import express from "express";
 import path from "path";
 import { createServer as createViteServer } from "vite";
-import { GoogleGenAI, Type } from "@google/genai";
+import Groq from "groq-sdk";
 import dotenv from "dotenv";
 import { FootballMatch, MatchStatus, MatchStats, AIPrediction } from "./src/types";
 import { exec } from "child_process";
@@ -13,23 +13,18 @@ app.use(express.json());
 
 const PORT = 3000;
 
-// Initialize Gemini SDK with safety checks for token startup crash
-let aiClient: GoogleGenAI | null = null;
-function getGeminiClient(): GoogleGenAI | null {
+// Initialize Groq SDK with safety checks for token startup crash
+let aiClient: Groq | null = null;
+function getGroqClient(): Groq | null {
   if (!aiClient) {
-    const key = process.env.GEMINI_API_KEY;
-    if (key && key !== "MY_GEMINI_API_KEY" && key.trim() !== "") {
+    const key = process.env.GROQ_API_KEY;
+    if (key && key.trim() !== "") {
       try {
-        aiClient = new GoogleGenAI({
-          apiKey: key,
-          httpOptions: {
-            headers: {
-              'User-Agent': 'aistudio-build',
-            }
-          }
+        aiClient = new Groq({
+          apiKey: key
         });
       } catch (e) {
-        console.error("Erro ao inicializar o cliente do Gemini:", e);
+        console.error("Erro ao inicializar o cliente do Groq:", e);
       }
     }
   }
@@ -689,7 +684,7 @@ app.post("/api/matches/analyze", async (req, res) => {
     return res.status(400).json({ error: "Nomes das equipes são obrigatórios" });
   }
 
-  const client = getGeminiClient();
+  const client = getGroqClient();
   const simulatedId = "custom_" + Date.now();
 
   const mockGeneratedMatch: FootballMatch = {
@@ -755,14 +750,14 @@ app.post("/api/matches/analyze", async (req, res) => {
   };
 
   if (!client) {
-    // If Gemini is not fully configured, return high-fidelity mock calculations but label them as simulated
-    console.log("No Gemini API key configured, active client fallback simulation triggered.");
+    // If Groq is not fully configured, return high-fidelity mock calculations but label them as simulated
+    console.log("No Groq API key configured, active client fallback simulation triggered.");
     databaseMatches.unshift(mockGeneratedMatch);
     matchLogs[simulatedId] = ["Aguardando início da simulação. Dados formulados por algoritmos locais padrão."];
     return res.json({
       match: mockGeneratedMatch,
       isSimulated: true,
-      message: "Sucesso! Analisado usando o algoritmo inteligente local (Insira a sua chave Gemini no painel de Segredos para ativar a IA avançada em tempo real)."
+      message: "Sucesso! Analisado usando o algoritmo inteligente local (Insira a sua chave Groq no painel de Segredos para ativar a IA avançada em tempo real)."
     });
   }
 
@@ -822,15 +817,13 @@ EXIJO que o seu retorno seja ÚNICA E EXCLUSIVAMENTE o conteúdo do JSON, sem co
   ]
 }`;
 
-    const response = await client.models.generateContent({
-      model: "gemini-3.5-flash",
-      contents: prompt,
-      config: {
-        responseMimeType: "application/json"
-      }
+    const response = await client.chat.completions.create({
+      messages: [{ role: "user", content: prompt }],
+      model: "llama3-8b-8192",
+      response_format: { type: "json_object" }
     });
 
-    const outputText = response.text || "";
+    const outputText = response.choices[0].message.content || "";
     const parsedData = JSON.parse(outputText.trim());
 
     // Construct full match object back-end
@@ -896,17 +889,17 @@ EXIJO que o seu retorno seja ÚNICA E EXCLUSIVAMENTE o conteúdo do JSON, sem co
     res.json({
       match: newMatch,
       isSimulated: false,
-      message: "Análise realizada com sucesso através da Inteligência Artificial do Google Gemini!"
+      message: "Análise realizada com sucesso através da Inteligência Artificial da Groq!"
     });
   } catch (error) {
-    console.error("Erro ao invocar a API do Gemini:", error);
+    console.error("Erro ao invocar a API da Groq:", error);
     // Return gorgeous fallback
     databaseMatches.unshift(mockGeneratedMatch);
     matchLogs[simulatedId] = ["Aguardando início da simulação. Dados gerados sob algoritmo inteligente de contingência de rede."];
     res.json({
       match: mockGeneratedMatch,
       isSimulated: true,
-      message: "Sucesso! Analisado usando o algoritmo inteligente local (Detectamos oscilação ou chave inválida na API Gemini)."
+      message: "Sucesso! Analisado usando o algoritmo inteligente local (Detectamos oscilação ou chave inválida na API Groq)."
     });
   }
 });
